@@ -1,22 +1,33 @@
 package hexlet.code;
 
+import hexlet.code.config.DBConfig;
 import io.javalin.Javalin;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+import java.io.IOException;
+import java.sql.SQLException;
+
 public class App {
 
-    public static void main(String[] args){
-        Javalin app = getApp();
-
-        app.start(Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"))); // for example
+    private static int getPort() {
+        return Integer.parseInt(System.getenv().getOrDefault("PORT", "8080")); // for example
     }
 
-    public static Javalin getApp() {
+    private static String getDatabaseUrl() {
+        return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project");  // for local
+    }
 
-        var app = Javalin.create(config -> {
-            config.bundledPlugins.enableDevLogging();
-        });
+
+    public static void main(String[] args) throws SQLException, IOException {
+        Javalin app = getApp();
+
+        app.start(getPort());
+    }
+
+    public static Javalin getApp() throws SQLException, IOException {
+
+        DBConfig.init(getDatabaseUrl());
+
+        var app = Javalin.create(config -> config.bundledPlugins.enableDevLogging());
 
         app.get("/", ctx -> ctx.result("Hello World"));
 
