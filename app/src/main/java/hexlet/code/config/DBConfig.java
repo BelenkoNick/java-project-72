@@ -13,9 +13,11 @@ import java.sql.Statement;
 @Slf4j
 public class DBConfig {
 
-    public static void init(String databaseUrl) throws IOException, SQLException {
+    public static void init(String databaseUrl, String user, String pass) throws IOException, SQLException {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(databaseUrl);
+        hikariConfig.setUsername(user);
+        hikariConfig.setPassword(pass);
 
         HikariDataSource dataSource = new HikariDataSource(hikariConfig);
         String schema = Utils.readResourceFile("schema.sql");

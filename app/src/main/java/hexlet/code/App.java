@@ -4,6 +4,10 @@ import gg.jte.ContentType;
 import gg.jte.TemplateEngine;
 import gg.jte.resolve.ResourceCodeResolver;
 import hexlet.code.config.DBConfig;
+import hexlet.code.controller.RootController;
+import hexlet.code.controller.UrlController;
+import hexlet.code.util.Routes;
+import hexlet.code.util.RoutesUtils;
 import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 
@@ -20,6 +24,13 @@ public class App {
         return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project");  // for local
     }
 
+    private static String getDatabaseUser() {
+        return System.getenv().getOrDefault("DATABASE_USER", "");
+    }
+
+    private static String getDatabasePass() {
+        return System.getenv().getOrDefault("DATABASE_PASS", "");
+    }
 
     public static void main(String[] args) throws SQLException, IOException {
         Javalin app = getApp();
@@ -28,14 +39,19 @@ public class App {
     }
 
     public static Javalin getApp() throws SQLException, IOException {
-        DBConfig.init(getDatabaseUrl());
+        DBConfig.init(getDatabaseUrl(), getDatabaseUser(), getDatabasePass());
 
-        var app = Javalin.create(config -> {
+        Javalin app = Javalin.create(config -> {
             config.bundledPlugins.enableDevLogging();
             config.fileRenderer(new JavalinJte(createTemplateEngine()));
         });
 
-        app.get("/", ctx -> ctx.result("Hello World"));
+        app.get("/", RootController::mainPage);
+        app.get(Routes.URLS_PATH.getUrl(), UrlController::listUrls);
+        app.post(Routes.URLS_PATH.getUrl(), UrlController::createUrl);
+        app.get(RoutesUtils.urlPath("{id}"), UrlController::showUrl);
+        app.post(RoutesUtils.urlChecksPath("{id}"), UrlController::checkUrl);
+
 
         return app;
     }

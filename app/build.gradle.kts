@@ -18,6 +18,9 @@ dependencies {
     implementation("io.javalin:javalin-bundle:6.4.0")
     implementation("io.javalin:javalin-rendering:6.4.0")
     implementation("org.slf4j:slf4j-simple:2.0.16")
+    implementation ("org.jsoup:jsoup:1.19.1")
+    implementation ("com.konghq:unirest-java:3.13.0")
+
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
     testImplementation(platform("org.junit:junit-bom:5.9.1"))

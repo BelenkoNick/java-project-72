@@ -5,14 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
-import java.util.UUID;
-
 
 @Getter
 @Setter
 @ToString
 public class Url {
-    private UUID id;
+    private Long id;
     private String name;
     private Timestamp createdAt;
 }
