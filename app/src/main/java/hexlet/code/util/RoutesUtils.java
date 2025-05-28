@@ -10,4 +10,12 @@ public class RoutesUtils {
         return String.format(Routes.URLS_CHECK_PATH.getUrl(), id);
     }
 
+    public static String urlPath(Long id) {
+        return String.format(Routes.URLS_PATH_WITH_ID.getUrl(), id);
+    }
+
+    public static String urlChecksPath(Long id) {
+        return String.format(Routes.URLS_CHECK_PATH.getUrl(), id);
+    }
+
 }

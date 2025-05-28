@@ -1,11 +1,11 @@
 @import hexlet.code.dto.UrlPage
-@import hexlet.code.util.NamedRoutes
+@import hexlet.code.util.RoutesUtils
 @import java.time.format.DateTimeFormatter
 @param UrlPage page
 
 !{var formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");}
 
-@template.layout.page(
+@template.layouts.page(
     page = page,
     content = @`
         <div class="container-lg mt-5">
@@ -29,7 +29,7 @@
             </table>
 
             <h2 class="mt-5">Проверки</h2>
-            <form method="post" action="${NamedRoutes.urlChecksPath(page.getUrl().getId())}">
+            <form method="post" action="${RoutesUtils.urlChecksPath(page.getUrl().getId())}">
                 <button type="submit" class="btn btn-primary">Запустить проверку</button>
             </form>
 
