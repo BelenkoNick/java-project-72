@@ -1,5 +1,7 @@
 plugins {
     application
+    id("org.sonarqube") version "6.2.0.5505"
+    id ("jacoco")
 }
 
 group = "hexlet.code"
@@ -23,18 +25,39 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok:1.18.30")
     annotationProcessor("org.projectlombok:lombok:1.18.30")
+
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("org.assertj:assertj-core:3.27.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation ("com.squareup.okhttp3:mockwebserver:4.12.0")
 
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "BelenkoNick_java-project-72")
+        property("sonar.organization", "belenkonick")
+        property("sonar.host.url", "https://sonarcloud.io")
+    }
 }
 
 application {
     mainClass.value("hexlet.code.App")
 }
 
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
+
+    reports {
+        xml.required.set(true)
+        csv.required.set(false)
+        html.required.set(true)
+    }
+}
+
 tasks.test {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
 }

@@ -1,6 +1,7 @@
 package hexlet.code.repository;
 
 import hexlet.code.model.UrlCheck;
+import hexlet.code.util.Constants;
 import hexlet.code.util.PreparedStatements;
 
 import java.sql.Connection;
@@ -15,11 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 public class UrlCheckRepository extends BaseRepository {
-    
+
     public static void save(UrlCheck check) throws SQLException {
         Timestamp datetime = new Timestamp(System.currentTimeMillis());
         try (Connection conn = dataSource.getConnection();
-             PreparedStatement preparedStatement = conn.prepareStatement(PreparedStatements.URLS_CHECK_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement preparedStatement = conn.prepareStatement(
+                     PreparedStatements.URLS_CHECK_INSERT, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, check.getUrlId());
             preparedStatement.setInt(2, check.getStatusCode());
             preparedStatement.setString(3, check.getH1());
@@ -42,14 +44,14 @@ public class UrlCheckRepository extends BaseRepository {
              PreparedStatement stmt = conn.prepareStatement(PreparedStatements.URLS_CHECK_SELECT_BY_URL_ID)) {
             stmt.setLong(1, urlId);
             ResultSet resultSet = stmt.executeQuery();
-            List result = new ArrayList<UrlCheck>();
+            List<UrlCheck> result = new ArrayList<>();
             while (resultSet.next()) {
                 Long id = resultSet.getLong("id");
                 Integer statusCode = resultSet.getInt("status_code");
                 String title = resultSet.getString("title");
                 String h1 = resultSet.getString("h1");
                 String description = resultSet.getString("description");
-                Timestamp createdAt = resultSet.getTimestamp("created_at");
+                Timestamp createdAt = resultSet.getTimestamp(Constants.CREATED_AT);
                 UrlCheck check = new UrlCheck(statusCode, title, h1, description);
                 check.setId(id);
                 check.setUrlId(urlId);
@@ -72,7 +74,7 @@ public class UrlCheckRepository extends BaseRepository {
                 String title = resultSet.getString("title");
                 String h1 = resultSet.getString("h1");
                 String description = resultSet.getString("description");
-                Timestamp createdAt = resultSet.getTimestamp("created_at");
+                Timestamp createdAt = resultSet.getTimestamp(Constants.CREATED_AT);
                 UrlCheck check = new UrlCheck(statusCode, title, h1, description);
                 check.setId(id);
                 check.setUrlId(urlId);

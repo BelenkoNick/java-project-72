@@ -1,6 +1,7 @@
 package hexlet.code.repository;
 
 import hexlet.code.model.Url;
+import hexlet.code.util.Constants;
 import hexlet.code.util.PreparedStatements;
 
 import java.sql.Connection;
@@ -41,7 +42,7 @@ public class UrlRepository extends BaseRepository {
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
-                Timestamp createdAt = resultSet.getTimestamp("created_at");
+                Timestamp createdAt = resultSet.getTimestamp(Constants.CREATED_AT);
                 Url url = new Url();
                 url.setName(name);
                 url.setId(id);
@@ -60,7 +61,7 @@ public class UrlRepository extends BaseRepository {
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
-                Timestamp createdAt = resultSet.getTimestamp("created_at");
+                Timestamp createdAt = resultSet.getTimestamp(Constants.CREATED_AT);
                 Long id = resultSet.getLong("id");
                 Url url = new Url();
                 url.setName(name);
@@ -80,7 +81,7 @@ public class UrlRepository extends BaseRepository {
             ResultSet resultSet = stmt.executeQuery();
             if (resultSet.next()) {
                 String name = resultSet.getString("name");
-                Timestamp createdAt = resultSet.getTimestamp("created_at");
+                Timestamp createdAt = resultSet.getTimestamp(Constants.CREATED_AT);
                 Long urlId = resultSet.getLong("id");
                 Url url = new Url();
                 url.setName(name);
@@ -97,11 +98,11 @@ public class UrlRepository extends BaseRepository {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(PreparedStatements.URLS_SELECT_ORDER_BY_ID)) {
             ResultSet resultSet = stmt.executeQuery();
-            List result = new ArrayList<Url>();
+            List<Url> result = new ArrayList<>();
             while (resultSet.next()) {
                 Long id = resultSet.getLong("id");
                 String name = resultSet.getString("name");
-                Timestamp createdAt = resultSet.getTimestamp("created_at");
+                Timestamp createdAt = resultSet.getTimestamp(Constants.CREATED_AT);
                 Url url = new Url();
                 url.setName(name);
                 url.setId(id);

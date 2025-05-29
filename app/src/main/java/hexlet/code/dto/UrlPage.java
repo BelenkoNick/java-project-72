@@ -13,4 +13,3 @@ public class UrlPage extends BasePage {
     private Url url;
     private List<UrlCheck> checks;
 }
-
